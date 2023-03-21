@@ -26,7 +26,7 @@ under the License.
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>36</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>maven</artifactId>
@@ -47,7 +47,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <classWorldsVersion>2.6.0</classWorldsVersion>
+    <classWorldsVersion>2.7.0</classWorldsVersion>
     <commonsCliVersion>1.5.0</commonsCliVersion>
     <commonsLangVersion>3.12.0</commonsLangVersion>
     <junitVersion>5.8.1</junitVersion>
