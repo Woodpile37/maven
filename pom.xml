@@ -26,7 +26,7 @@ under the License.
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
     <version>36</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>maven</artifactId>
@@ -52,7 +52,7 @@ under the License.
     <commonsLangVersion>3.12.0</commonsLangVersion>
     <junitVersion>5.8.1</junitVersion>
     <mockitoVersion>3.2.0</mockitoVersion>
-    <plexusVersion>2.1.0</plexusVersion>
+    <plexusVersion>2.1.1</plexusVersion>
     <plexusInterpolationVersion>1.26</plexusInterpolationVersion>
     <plexusUtilsVersion>3.4.2</plexusUtilsVersion>
     <guiceVersion>4.2.3</guiceVersion>
