@@ -606,7 +606,7 @@ public class DefaultModelValidator implements ModelValidator {
                 }
 
                 String sysPath = dependency.getSystemPath();
-                if (StringUtils.isNotEmpty(sysPath)) {
+                if (sysPath != null && !sysPath.isEmpty()) {
                     if (!hasExpression(sysPath)) {
                         addViolation(
                                 problems,
@@ -837,7 +837,7 @@ public class DefaultModelValidator implements ModelValidator {
         if ("system".equals(d.getScope())) {
             String systemPath = d.getSystemPath();
 
-            if (StringUtils.isEmpty(systemPath)) {
+            if (systemPath == null || systemPath.isEmpty()) {
                 addViolation(
                         problems,
                         Severity.ERROR,
@@ -882,7 +882,7 @@ public class DefaultModelValidator implements ModelValidator {
                     Version.BASE,
                     prefix + "systemPath",
                     d.getManagementKey(),
-                    "must be omitted." + " This field may only be specified for a dependency with system scope.",
+                    "must be omitted. This field may only be specified for a dependency with system scope.",
                     d);
         }
 

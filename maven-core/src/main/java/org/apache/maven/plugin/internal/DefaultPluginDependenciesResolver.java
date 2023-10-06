@@ -77,9 +77,13 @@ public class DefaultPluginDependenciesResolver implements PluginDependenciesReso
 
     private final RepositorySystem repoSystem;
 
+    private final List<MavenPluginDependenciesValidator> dependenciesValidators;
+
     @Inject
-    public DefaultPluginDependenciesResolver(RepositorySystem repoSystem) {
+    public DefaultPluginDependenciesResolver(
+            RepositorySystem repoSystem, List<MavenPluginDependenciesValidator> dependenciesValidators) {
         this.repoSystem = repoSystem;
+        this.dependenciesValidators = dependenciesValidators;
     }
 
     private Artifact toArtifact(Plugin plugin, RepositorySystemSession session) {
@@ -106,6 +110,10 @@ public class DefaultPluginDependenciesResolver implements PluginDependenciesReso
                     new ArtifactDescriptorRequest(pluginArtifact, repositories, REPOSITORY_CONTEXT);
             request.setTrace(trace);
             ArtifactDescriptorResult result = repoSystem.readArtifactDescriptor(pluginSession, request);
+
+            for (MavenPluginDependenciesValidator dependenciesValidator : dependenciesValidators) {
+                dependenciesValidator.validate(session, pluginArtifact, result);
+            }
 
             pluginArtifact = result.getArtifact();
 
