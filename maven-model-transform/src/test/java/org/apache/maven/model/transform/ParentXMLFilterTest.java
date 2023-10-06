@@ -18,19 +18,20 @@
  */
 package org.apache.maven.model.transform;
 
+import javax.xml.stream.XMLStreamReader;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParentXMLFilterTest extends AbstractXMLFilterTests {
-    private Function<XmlPullParser, XmlPullParser> filterCreator;
+class ParentXMLFilterTest extends AbstractXMLFilterTests {
+    private Function<XMLStreamReader, XMLStreamReader> filterCreator;
 
     @BeforeEach
     void reset() {
@@ -38,26 +39,26 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Override
-    protected XmlPullParser getFilter(XmlPullParser parser) {
-        Function<XmlPullParser, XmlPullParser> filterCreator =
+    protected XMLStreamReader getFilter(XMLStreamReader parser) {
+        Function<XMLStreamReader, XMLStreamReader> filterCreator =
                 (this.filterCreator != null ? this.filterCreator : this::createFilter);
         return filterCreator.apply(parser);
     }
 
-    protected XmlPullParser createFilter(XmlPullParser parser) {
+    protected XMLStreamReader createFilter(XMLStreamReader parser) {
         return createFilter(
                 parser,
                 x -> Optional.of(new RelativeProject("GROUPID", "ARTIFACTID", "1.0.0")),
                 Paths.get("pom.xml").toAbsolutePath());
     }
 
-    protected XmlPullParser createFilter(
-            XmlPullParser parser, Function<Path, Optional<RelativeProject>> pathMapper, Path projectPath) {
+    protected XMLStreamReader createFilter(
+            XMLStreamReader parser, Function<Path, Optional<RelativeProject>> pathMapper, Path projectPath) {
         return new ParentXMLFilter(new FastForwardFilter(parser), pathMapper, projectPath);
     }
 
     @Test
-    public void testWithFastForward() throws Exception {
+    void testWithFastForward() throws Exception {
         String input = "<project>"
                 + "<build>"
                 + "<plugins>"
@@ -80,7 +81,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testWithFastForwardAfterByPass() throws Exception {
+    void testWithFastForwardAfterByPass() throws Exception {
         String input = "<project>"
                 + "<build>"
                 + "<plugins>"
@@ -125,7 +126,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testMinimum() throws Exception {
+    void testMinimum() throws Exception {
         String input = "<project><parent /></project>";
         String expected = input;
         String actual = transform(input);
@@ -133,7 +134,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testNoRelativePath() throws Exception {
+    void testNoRelativePath() throws Exception {
         String input = "<project><parent>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -147,19 +148,19 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testDefaultRelativePath() throws Exception {
+    void testDefaultRelativePath() throws Exception {
         String input = "<project>\n"
                 + "  <parent>\n"
                 + "    <groupId>GROUPID</groupId>\n"
                 + "    <artifactId>ARTIFACTID</artifactId>\n"
                 + "  </parent>\n"
                 + "</project>";
-        String expected = "<project>" + System.lineSeparator()
-                + "  <parent>" + System.lineSeparator()
-                + "    <groupId>GROUPID</groupId>" + System.lineSeparator()
-                + "    <artifactId>ARTIFACTID</artifactId>" + System.lineSeparator()
-                + "    <version>1.0.0</version>" + System.lineSeparator()
-                + "  </parent>" + System.lineSeparator()
+        String expected = "<project>\n"
+                + "  <parent>\n"
+                + "    <groupId>GROUPID</groupId>\n"
+                + "    <artifactId>ARTIFACTID</artifactId>\n"
+                + "    <version>1.0.0</version>\n"
+                + "  </parent>\n"
                 + "</project>";
 
         String actual = transform(input);
@@ -174,7 +175,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
      * @throws Exception
      */
     @Test
-    public void testEmptyRelativePathNoVersion() throws Exception {
+    void testEmptyRelativePathNoVersion() throws Exception {
         String input = "<project><parent>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -192,7 +193,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testNoVersion() throws Exception {
+    void testNoVersion() throws Exception {
         String input = "<project><parent>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -211,7 +212,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testInvalidRelativePath() throws Exception {
+    void testInvalidRelativePath() throws Exception {
         filterCreator = parser -> createFilter(
                 parser, x -> Optional.ofNullable(null), Paths.get("pom.xml").toAbsolutePath());
 
@@ -228,7 +229,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testRelativePathAndVersion() throws Exception {
+    void testRelativePathAndVersion() throws Exception {
         String input = "<project><parent>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -248,7 +249,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testWithWeirdNamespace() throws Exception {
+    void testWithWeirdNamespace() throws Exception {
         String input = "<relativePath:project xmlns:relativePath=\"relativePath\">"
                 + "<relativePath:parent>"
                 + "<relativePath:groupId>GROUPID</relativePath:groupId>"
@@ -270,7 +271,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void comment() throws Exception {
+    void comment() throws Exception {
         String input = "<project><!--before--><parent>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -291,7 +292,7 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testIndent() throws Exception {
+    void testIndent() throws Exception {
         String input = "<project>\n"
                 + "  <parent>\n"
                 + "    <groupId>GROUPID</groupId>\n"
@@ -299,13 +300,13 @@ public class ParentXMLFilterTest extends AbstractXMLFilterTests {
                 + "    <!--version here-->\n"
                 + "  </parent>\n"
                 + "</project>";
-        String expected = "<project>" + System.lineSeparator()
-                + "  <parent>" + System.lineSeparator()
-                + "    <groupId>GROUPID</groupId>" + System.lineSeparator()
-                + "    <artifactId>ARTIFACTID</artifactId>" + System.lineSeparator()
-                + "    <!--version here-->" + System.lineSeparator()
-                + "    <version>1.0.0</version>" + System.lineSeparator()
-                + "  </parent>" + System.lineSeparator()
+        String expected = "<project>\n"
+                + "  <parent>\n"
+                + "    <groupId>GROUPID</groupId>\n"
+                + "    <artifactId>ARTIFACTID</artifactId>\n"
+                + "    <!--version here-->\n"
+                + "    <version>1.0.0</version>\n"
+                + "  </parent>\n"
                 + "</project>";
 
         String actual = transform(input);

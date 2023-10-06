@@ -18,19 +18,20 @@
  */
 package org.apache.maven.model.transform;
 
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import javax.xml.stream.XMLStreamReader;
+
 import org.junit.jupiter.api.Test;
 
 import static org.xmlunit.assertj.XmlAssert.assertThat;
 
-public class RelativePathXMLFilterTest extends AbstractXMLFilterTests {
+class RelativePathXMLFilterTest extends AbstractXMLFilterTests {
     @Override
-    protected RelativePathXMLFilter getFilter(XmlPullParser parser) {
+    protected RelativePathXMLFilter getFilter(XMLStreamReader parser) {
         return new RelativePathXMLFilter(parser);
     }
 
     @Test
-    public void testRelativePath() throws Exception {
+    void testRelativePath() throws Exception {
         String input = "<project>\n"
                 + "  <parent>\n"
                 + "    <groupId>GROUPID</groupId>\n"
@@ -53,7 +54,7 @@ public class RelativePathXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testRelativePathNS() throws Exception {
+    void testRelativePathNS() throws Exception {
         String input = "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n"
                 + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
                 + "  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n"
@@ -80,7 +81,7 @@ public class RelativePathXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testRelativePathPasNS() throws Exception {
+    void testRelativePathPasNS() throws Exception {
         String input = "<p:project xmlns:p=\"http://maven.apache.org/POM/4.0.0\"\n"
                 + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
                 + "  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n"
