@@ -1,5 +1,3 @@
-package org.apache.maven.model.transform;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,90 +16,72 @@ package org.apache.maven.model.transform;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.model.transform;
 
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import javax.xml.stream.XMLStreamReader;
+
 import org.junit.jupiter.api.Test;
 
 import static org.xmlunit.assertj.XmlAssert.assertThat;
 
-public class ModulesXMLFilterTest
-    extends AbstractXMLFilterTests
-{
+class ModulesXMLFilterTest extends AbstractXMLFilterTests {
 
     @Override
-    protected ModulesXMLFilter getFilter( XmlPullParser parser )
-    {
-        return new ModulesXMLFilter( parser );
+    protected ModulesXMLFilter getFilter(XMLStreamReader parser) {
+        return new ModulesXMLFilter(parser);
     }
 
     @Test
-    public void emptyModules()
-        throws Exception
-    {
+    void emptyModules() throws Exception {
         String input = "<project><modules/></project>";
         String expected = "<project/>";
-        String actual = transform( input );
-        assertThat( actual ).and( expected ).areIdentical();
+        String actual = transform(input);
+        assertThat(actual).and(expected).areIdentical();
     }
 
     @Test
-    public void setOfModules()
-        throws Exception
-    {
-        String input = "<project><modules>"
-                + "<module>ab</module>"
-                + "<module>../cd</module>"
-                + "</modules></project>";
+    void setOfModules() throws Exception {
+        String input = "<project><modules>" + "<module>ab</module>" + "<module>../cd</module>" + "</modules></project>";
         String expected = "<project/>";
-        String actual = transform( input );
-        assertThat( actual ).and( expected ).areIdentical();
+        String actual = transform(input);
+        assertThat(actual).and(expected).areIdentical();
     }
 
     @Test
-    public void noModules()
-        throws Exception
-    {
+    void noModules() throws Exception {
         String input = "<project><name>NAME</name></project>";
         String expected = input;
-        String actual = transform( input );
-        assertThat( actual ).and( expected ).areIdentical();
+        String actual = transform(input);
+        assertThat(actual).and(expected).areIdentical();
     }
 
     @Test
-    public void comment()
-        throws Exception
-    {
+    void comment() throws Exception {
 
         String input = "<project><!--before--><modules>"
-                        + "<!--pre-in-->"
-                        + "<module><!--in-->ab</module>"
-                        + "<module>../cd</module>"
-                        + "<!--post-in-->"
-                        + "</modules>"
-                        + "<!--after--></project>";
+                + "<!--pre-in-->"
+                + "<module><!--in-->ab</module>"
+                + "<module>../cd</module>"
+                + "<!--post-in-->"
+                + "</modules>"
+                + "<!--after--></project>";
         String expected = "<project><!--before--><!--after--></project>";
-        String actual = transform( input );
-        assertThat( actual ).and( expected ).areIdentical();
+        String actual = transform(input);
+        assertThat(actual).and(expected).areIdentical();
     }
 
     @Test
-    public void setOfModulesLF()
-        throws Exception
-    {
+    void setOfModulesLF() throws Exception {
         String input = "<project>\n"
-            + "\n"
-            + "  <modules>\n"
-            + "    <module>ab</module>\n"
-            + "    <module>../cd</module>\n"
-            + "  </modules>\n"
-            + "\n"
-            + "</project>\n";
-        String expected = "<project>\n"
-            + "\n"
-            + "  \n"
-            + "\n"
-            + "</project>\n";
-        String actual = transform( input );
-        assertThat( actual ).and( expected ).areIdentical();
+                + "\n"
+                + "  <modules>\n"
+                + "    <module>ab</module>\n"
+                + "    <module>../cd</module>\n"
+                + "  </modules>\n"
+                + "\n"
+                + "</project>\n";
+        String expected = "<project>\n" + "\n" + "  \n" + "\n" + "</project>\n";
+        String actual = transform(input);
+        assertThat(actual).and(expected).areIdentical();
     }
 }
