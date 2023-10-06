@@ -43,7 +43,7 @@ under the License.
   <inceptionYear>2001</inceptionYear>
   <properties>
     <javaVersion>8</javaVersion>
-    <classWorldsVersion>2.6.0</classWorldsVersion>
+    <classWorldsVersion>2.7.0</classWorldsVersion>
     <commonsCliVersion>1.5.0</commonsCliVersion>
     <commonsLangVersion>3.12.0</commonsLangVersion>
     <junitVersion>5.8.1</junitVersion>
