@@ -18,15 +18,16 @@
  */
 package org.apache.maven.model.transform;
 
+import javax.xml.stream.XMLStreamReader;
+
 import java.util.function.BiFunction;
 
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.xmlunit.assertj.XmlAssert.assertThat;
 
-public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
+class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     private BiFunction<String, String, String> reactorVersionMapper;
 
     @BeforeEach
@@ -35,13 +36,13 @@ public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Override
-    protected ReactorDependencyXMLFilter getFilter(XmlPullParser parser) {
+    protected ReactorDependencyXMLFilter getFilter(XMLStreamReader parser) {
         return new ReactorDependencyXMLFilter(
                 parser, reactorVersionMapper != null ? reactorVersionMapper : (g, a) -> "1.0.0");
     }
 
     @Test
-    public void testDefaultDependency() throws Exception {
+    void testDefaultDependency() throws Exception {
         String input = "<dependency>"
                 + "<groupId>GROUPID</groupId>"
                 + "<artifactId>ARTIFACTID</artifactId>"
@@ -55,7 +56,7 @@ public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testManagedDependency() throws Exception {
+    void testManagedDependency() throws Exception {
         reactorVersionMapper = (g, a) -> null;
 
         String input =
@@ -68,7 +69,7 @@ public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testReactorDependency() throws Exception {
+    void testReactorDependency() throws Exception {
         String input =
                 "<dependency>" + "<groupId>GROUPID</groupId>" + "<artifactId>ARTIFACTID</artifactId>" + "</dependency>";
         String expected = "<dependency>"
@@ -83,7 +84,7 @@ public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void testReactorDependencyLF() throws Exception {
+    void testReactorDependencyLF() throws Exception {
         String input = "<dependency>\n"
                 + "  <groupId>GROUPID</groupId>\n"
                 + "  <artifactId>ARTIFACTID</artifactId>\n"
@@ -102,7 +103,7 @@ public class ReactorDependencyXMLFilterTest extends AbstractXMLFilterTests {
     }
 
     @Test
-    public void multipleDependencies() throws Exception {
+    void multipleDependencies() throws Exception {
         String input = "<project>\n" + "  <modelVersion>4.0.0</modelVersion>\n"
                 + "    <groupId>tests.project</groupId>\n"
                 + "    <artifactId>duplicate-plugin-defs-merged</artifactId>\n"

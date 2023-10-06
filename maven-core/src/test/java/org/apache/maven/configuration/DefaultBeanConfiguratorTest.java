@@ -18,14 +18,14 @@
  */
 package org.apache.maven.configuration;
 
+import javax.xml.stream.XMLStreamException;
+
 import java.io.File;
-import java.io.IOException;
 import java.io.StringReader;
 
 import org.apache.maven.configuration.internal.DefaultBeanConfigurator;
 import org.apache.maven.internal.xml.XmlNodeBuilder;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,30 +35,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Benjamin Bentmann
  */
-public class DefaultBeanConfiguratorTest {
+class DefaultBeanConfiguratorTest {
 
     private BeanConfigurator configurator;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         configurator = new DefaultBeanConfigurator();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         configurator = null;
     }
 
     private Xpp3Dom toConfig(String xml) {
         try {
-            return new Xpp3Dom(XmlNodeBuilder.build(new StringReader("<configuration>" + xml + "</configuration>")));
-        } catch (XmlPullParserException | IOException e) {
+            return new Xpp3Dom(XmlNodeBuilder.build(
+                    new StringReader("<configuration>" + xml + "</configuration>"),
+                    (XmlNodeBuilder.InputLocationBuilderStax) null));
+        } catch (XMLStreamException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     @Test
-    public void testMinimal() throws BeanConfigurationException {
+    void testMinimal() throws BeanConfigurationException {
         SomeBean bean = new SomeBean();
 
         Xpp3Dom config = toConfig("<file>test</file>");
@@ -72,7 +74,7 @@ public class DefaultBeanConfiguratorTest {
     }
 
     @Test
-    public void testPreAndPostProcessing() throws BeanConfigurationException {
+    void testPreAndPostProcessing() throws BeanConfigurationException {
         SomeBean bean = new SomeBean();
 
         Xpp3Dom config = toConfig("<file>${test}</file>");
@@ -96,7 +98,7 @@ public class DefaultBeanConfiguratorTest {
     }
 
     @Test
-    public void testChildConfigurationElement() throws BeanConfigurationException {
+    void testChildConfigurationElement() throws BeanConfigurationException {
         SomeBean bean = new SomeBean();
 
         Xpp3Dom config = toConfig("<wrapper><file>test</file></wrapper>");
