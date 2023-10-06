@@ -50,7 +50,7 @@ under the License.
     <mockitoVersion>3.2.0</mockitoVersion>
     <plexusVersion>2.1.0</plexusVersion>
     <plexusInterpolationVersion>1.26</plexusInterpolationVersion>
-    <plexusUtilsVersion>3.4.2</plexusUtilsVersion>
+    <plexusUtilsVersion>3.5.0</plexusUtilsVersion>
     <guiceVersion>4.2.3</guiceVersion>
     <guavaVersion>31.1-jre</guavaVersion>
     <guavafailureaccessVersion>1.0.1</guavafailureaccessVersion>
