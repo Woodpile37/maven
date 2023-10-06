@@ -1,5 +1,3 @@
-package org.apache.maven.model.transform;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,38 +16,38 @@ package org.apache.maven.model.transform;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.model.transform;
 
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
+import javax.xml.stream.XMLStreamReader;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CiFriendlyXMLFilterTest extends AbstractXMLFilterTests
-{
+class CiFriendlyXMLFilterTest extends AbstractXMLFilterTests {
     @Override
-    protected CiFriendlyXMLFilter getFilter(XmlPullParser parser) {
+    protected CiFriendlyXMLFilter getFilter(XMLStreamReader parser) {
 
-        CiFriendlyXMLFilter filter = new CiFriendlyXMLFilter( parser, true );
-        filter.setChangelist( "CHANGELIST" );
+        CiFriendlyXMLFilter filter = new CiFriendlyXMLFilter(parser, true);
+        filter.setChangelist("CHANGELIST");
         return filter;
     }
 
     @Test
-    public void changelist() throws Exception
-    {
+    void changelist() throws Exception {
         String input = "<project>"
-            + "  <groupId>GROUPID</groupId>"
-            + "  <artifactId>ARTIFACTID</artifactId>"
-            +   "<version>${changelist}</version>"
-            + "</project>";
+                + "  <groupId>GROUPID</groupId>"
+                + "  <artifactId>ARTIFACTID</artifactId>"
+                + "<version>${changelist}</version>"
+                + "</project>";
         String expected = "<project>"
-                        + "  <groupId>GROUPID</groupId>"
-                        + "  <artifactId>ARTIFACTID</artifactId>"
-                        +   "<version>CHANGELIST</version>"
-                        + "</project>";
+                + "  <groupId>GROUPID</groupId>"
+                + "  <artifactId>ARTIFACTID</artifactId>"
+                + "<version>CHANGELIST</version>"
+                + "</project>";
 
-        String actual = transform( input );
+        String actual = transform(input);
 
-        assertEquals( expected, actual );
+        assertEquals(expected, actual);
     }
 }
