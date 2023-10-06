@@ -1,5 +1,3 @@
-package org.apache.maven.model.building;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,15 +16,16 @@ package org.apache.maven.model.building;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.model.building;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.xml.stream.XMLStreamReader;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import org.apache.maven.model.transform.BuildToRawPomXMLFilterFactory;
-import org.codehaus.plexus.util.xml.pull.XmlPullParser;
 
 /**
  * ModelSourceTransformer for the build pom
@@ -36,15 +35,12 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParser;
  */
 @Named
 @Singleton
-class BuildModelSourceTransformer implements ModelSourceTransformer
-{
+class BuildModelSourceTransformer implements ModelSourceTransformer {
     @Override
-    public XmlPullParser transform( XmlPullParser parser, Path pomFile, TransformerContext context )
-            throws IOException, TransformerException
-    {
-        BuildToRawPomXMLFilterFactory buildPomXMLFilterFactory =
-                new DefaultBuildPomXMLFilterFactory( context, false );
+    public XMLStreamReader transform(XMLStreamReader parser, Path pomFile, TransformerContext context)
+            throws IOException, TransformerException {
+        BuildToRawPomXMLFilterFactory buildPomXMLFilterFactory = new DefaultBuildPomXMLFilterFactory(context, false);
 
-        return buildPomXMLFilterFactory.get( parser, pomFile );
+        return buildPomXMLFilterFactory.get(parser, pomFile);
     }
 }
