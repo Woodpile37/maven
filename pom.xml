@@ -25,7 +25,7 @@ under the License.
     <artifactId>maven-parent</artifactId>
     <!-- please also update in maven-bom -->
     <version>40</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>maven</artifactId>
@@ -153,7 +153,7 @@ under the License.
     <junitVersion>5.10.0</junitVersion>
     <mockitoVersion>4.11.0</mockitoVersion>
     <plexusInterpolationVersion>1.26</plexusInterpolationVersion>
-    <plexusXmlVersion>4.0.1</plexusXmlVersion>
+    <plexusXmlVersion>4.0.2</plexusXmlVersion>
     <guiceVersion>5.1.0</guiceVersion>
     <guavaVersion>32.0.1-jre</guavaVersion>
     <guavafailureaccessVersion>1.0.1</guavafailureaccessVersion>
