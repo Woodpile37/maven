@@ -156,7 +156,7 @@ under the License.
     <plexusXmlVersion>4.0.1</plexusXmlVersion>
     <guiceVersion>5.1.0</guiceVersion>
     <guavaVersion>32.0.1-jre</guavaVersion>
-    <guavafailureaccessVersion>1.0.1</guavafailureaccessVersion>
+    <guavafailureaccessVersion>1.0.2</guavafailureaccessVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <securityDispatcherVersion>2.0</securityDispatcherVersion>
     <cipherVersion>2.0</cipherVersion>
